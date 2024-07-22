@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jok8s-deployment
+  labels:
+    app: jok8s
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jok8s
+  template:
+    metadata:
+      labels:
+        app: jok8s
+    spec:
+      containers:
+        - name: jok8s
+          image: jgafnea/jok8s:1.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jok8s-service
+spec:
+  # Use NodePort for testing, LoadBalancer for production
+  type: NodePort
+  selector:
+    app: jok8s
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+      # # Valid ports are 30000-32767,
+      # nodePort: 30000
