@@ -2,16 +2,25 @@
 
 Jokes via Kubernetes.
 
-## Installation and Usage
+## Install
 
 ```sh
-# Build image, push to cluster
+# Build Docker image
 docker build -t jgafnea/jok8s:1.0 app
+
+# Deploy with Terraform
+cd infra/terraform
+terraform init
+terraform apply
+
+# Deploy with Minikube
 minikube image load jgafnea/jok8s:1.0
+minikube kubectl -- apply -f infra/kubectl/manifest.yaml
+```
 
-# Apply manifest
-minikube kubectl -- apply -f k8s/manifest.yaml
+## Usage
 
+```sh
 # Call service
 minikube service --all --url
 # http://192.168.49.2:30000
